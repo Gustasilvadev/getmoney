@@ -26,10 +26,35 @@ public class UsuarioService {
         return this.usuarioRepository.save(usuario);
     }
 
-    /*
-    public Usuario editarUsuario(Integer id, UsuarioRequestDTO requestDTO) {
+    public Usuario buscarUsuarioPorId(Integer id) { //buscar usuario por id
+        return usuarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + id + " não encontrado"));
+    }
+    public Usuario editarUsuario(Integer id, Usuario usuarioAtualizado) {
+        return usuarioRepository.findById(id)
+                .map(usuarioExistente -> {
+                    // Atualiza apenas se os campos forem diferentes
+                    if (!usuarioExistente.getNome().equals(usuarioAtualizado.getNome())) {
+                        usuarioExistente.setNome(usuarioAtualizado.getNome());
+                    }
+
+                    if (!usuarioExistente.getEmail().equals(usuarioAtualizado.getEmail())) {
+                        usuarioExistente.setEmail(usuarioAtualizado.getEmail());
+                    }
+                    if (!usuarioExistente.getSenha().equals(usuarioAtualizado.getSenha())) {
+                        usuarioExistente.setSenha(usuarioAtualizado.getSenha());
+                    }
+
+                    return usuarioRepository.save(usuarioExistente);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com id " + id));
+    }
+    public void deletar(Integer id){
+        boolean usuarioExists = usuarioRepository.existsById(id);
+        if(usuarioExists){
+            usuarioRepository.deleteById(id);
+        }
     }
 
-     */
+
 
 }

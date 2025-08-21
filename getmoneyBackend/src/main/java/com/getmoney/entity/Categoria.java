@@ -18,6 +18,20 @@ public class Categoria {
     @Column(name="categoria_tipo")
     private CategoriaTipo tipo;
 
+    /*
+    @OneToMany(mappedBy = "transacao")
+    private Transacao transacao;
+
+
+
+    public Transacao getTransacao() {
+        return transacao;
+    }
+
+    public void setTransacao(Transacao transacao) {
+        this.transacao = transacao;
+    }
+    */
     public Integer getId() {
         return id;
     }
