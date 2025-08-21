@@ -1,0 +1,87 @@
+package com.getmoney.entity;
+
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
+
+
+@Entity
+@Table(name = "usuario")
+public class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "usuario_id")
+    private Integer id;
+
+    @Column(name = "usuario_nome")
+    private String nome;
+
+    @Column(name = "usuario_email")
+    private String email;
+
+    @Column(name = "usuario_senha")
+    private String senha;
+
+    @Column(name = "usuario_data_criacao")
+    private LocalDate dataCriacao;
+
+    @Column(name="usuario_status")
+    private Integer status;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.dataCriacao = LocalDate.now();
+        if (this.status == null) {
+            this.status = 1; // Ao criar o usuario automaticamente --> 1 = ativo
+        }
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public LocalDate getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDate dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+}
