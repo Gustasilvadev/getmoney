@@ -1,7 +1,10 @@
 package com.getmoney.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.getmoney.enums.CategoriaTipo;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="categoria")
@@ -15,23 +18,15 @@ public class Categoria {
     @Column(name="categoria_nome")
     private String nome;
 
-    @Column(name="categoria_tipo")
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "categoria_tipo")
     private CategoriaTipo tipo;
 
-    /*
-    @OneToMany(mappedBy = "transacao")
-    private Transacao transacao;
+    @OneToMany(mappedBy = "categoria")
+    @JsonIgnore
+    private List<Transacao> transacoes;
 
 
-
-    public Transacao getTransacao() {
-        return transacao;
-    }
-
-    public void setTransacao(Transacao transacao) {
-        this.transacao = transacao;
-    }
-    */
     public Integer getId() {
         return id;
     }
@@ -54,5 +49,13 @@ public class Categoria {
 
     public void setTipo(CategoriaTipo tipo) {
         this.tipo = tipo;
+    }
+
+    public List<Transacao> getTransacoes() {
+        return transacoes;
+    }
+
+    public void setTransacoes(List<Transacao> transacoes) {
+        this.transacoes = transacoes;
     }
 }

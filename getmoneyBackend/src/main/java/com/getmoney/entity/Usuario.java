@@ -1,8 +1,10 @@
 package com.getmoney.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
@@ -29,9 +31,11 @@ public class Usuario {
     @Column(name="usuario_status")
     private Integer status;
 
-    public Integer getStatus() {
-        return status;
-    }
+    @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
+    private List<Transacao> transacoes;
+
+
 
     @PrePersist
     public void prePersist() {
@@ -41,32 +45,12 @@ public class Usuario {
         }
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public Integer getId() {
+        return id;
     }
 
-    public LocalDate getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(LocalDate dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -77,11 +61,43 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public Integer getId() {
-        return id;
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public LocalDate getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDate dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public List<Transacao> getTransacoes() {
+        return transacoes;
+    }
+
+    public void setTransacoes(List<Transacao> transacoes) {
+        this.transacoes = transacoes;
     }
 }

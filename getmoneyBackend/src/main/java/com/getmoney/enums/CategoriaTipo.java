@@ -17,12 +17,13 @@ public enum CategoriaTipo {
     public int getCodigo() {
         return codigo;
     }
+
     //Quando JSON chega com número, converte para o objeto enum
     @JsonCreator
     public static CategoriaTipo fromCodigo(int codigo) {
-        for (CategoriaTipo status : CategoriaTipo.values()) {
-            if (status.codigo == codigo) {
-                return status;
+        for (CategoriaTipo tipo : CategoriaTipo.values()) {
+            if (tipo.codigo == codigo) {
+                return tipo;
             }
         }
         throw new IllegalArgumentException("Código inválido: " + codigo);
