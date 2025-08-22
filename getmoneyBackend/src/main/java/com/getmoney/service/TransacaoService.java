@@ -7,6 +7,7 @@ import com.getmoney.entity.Usuario;
 import com.getmoney.repository.CategoriaRepository;
 import com.getmoney.repository.TransacaoRepository;
 import com.getmoney.repository.UsuarioRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,10 @@ public class TransacaoService {
 
     public List<Transacao> listarTransacoes(){
         return this.transacaoRepository.findAll();
+    }
+
+    public Transacao listarPorTransaccaoId(Integer transacaoId) {
+        return transacaoRepository.findById(transacaoId).orElseThrow(() -> new EntityNotFoundException("Transacao com ID " + transacaoId + " não encontrado"));
     }
 
     public Transacao criarTransacao(TransacaoRequestDTO requestDTO) {
@@ -49,5 +54,33 @@ public class TransacaoService {
 
         // Salvar a entidade
         return transacaoRepository.save(transacao);
+    }
+
+    public Transacao editarPorTransacaoId(Integer transacaoId, Transacao transacao){
+        return transacaoRepository.findById(transacaoId)
+                .map(transacaoExistente -> {
+
+                    if (!transacaoExistente.getValor().equals(transacao.getValor())) {
+                        transacaoExistente.setValor(transacao.getValor());
+                    }
+                    if (!transacaoExistente.getDescricao().equals(transacao.getDescricao())) {
+                        transacaoExistente.setDescricao(transacao.getDescricao());
+                    }
+                    if (!transacaoExistente.getData().equals(transacao.getData())) {
+                        transacaoExistente.setData(transacao.getData());
+                    }
+                    if (!transacaoExistente.getStatus().equals(transacao.getStatus())) {
+                        transacaoExistente.setStatus(transacao.getStatus());
+                    }
+                    return transacaoRepository.save(transacaoExistente);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Transacao não encontrado com id " + transacaoId));
+    }
+
+    public void deletarPorTransacaoId(Integer transacaoId) {
+        boolean transacaoExistente = transacaoRepository.existsById(transacaoId);
+        if(transacaoExistente){
+            transacaoRepository.deleteById(transacaoId);
+        }
     }
 }

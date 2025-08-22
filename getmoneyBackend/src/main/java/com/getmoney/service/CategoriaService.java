@@ -21,7 +21,7 @@ public class CategoriaService {
         return  this.categoriaRepository.findAll();
     }
 
-    public Categoria buscarCategoriaId(Integer categoriaId) {
+    public Categoria listarPorCategoriaId(Integer categoriaId) {
         return categoriaRepository.findById(categoriaId).orElseThrow(() -> new EntityNotFoundException("Categoria com ID " + categoriaId + " não encontrado"));
     }
 
@@ -29,7 +29,7 @@ public class CategoriaService {
         return this.categoriaRepository.save(categoria);
     }
 
-    public Categoria editarCategoria(Integer categoriaId, Categoria categoria){
+    public Categoria editarPorCategoriaId(Integer categoriaId, Categoria categoria){
         return categoriaRepository.findById(categoriaId)
                 .map(categoriaExistente -> {
 
@@ -44,7 +44,7 @@ public class CategoriaService {
                 .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrado com id " + categoriaId));
     }
 
-    public void deletarCategoria(Integer categoriaId){
+    public void deletarPorCategoriaId(Integer categoriaId){
         boolean categoriaExistente = categoriaRepository.existsById(categoriaId);
         if(categoriaExistente){
             categoriaRepository.deleteById(categoriaId);

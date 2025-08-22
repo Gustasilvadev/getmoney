@@ -26,10 +26,10 @@ public class UsuarioService {
         return this.usuarioRepository.save(usuario);
     }
 
-    public Usuario buscarUsuarioPorId(Integer id) { //buscar usuario por id
+    public Usuario listarPorUsuarioId(Integer id) { //listar usuario por id
         return usuarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + id + " não encontrado"));
     }
-    public Usuario editarUsuario(Integer id, Usuario usuarioAtualizado) {
+    public Usuario editarPorUsuarioId(Integer id, Usuario usuarioAtualizado) {
         return usuarioRepository.findById(id)
                 .map(usuarioExistente -> {
                     // Atualiza apenas se os campos forem diferentes
@@ -48,7 +48,7 @@ public class UsuarioService {
                 })
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com id " + id));
     }
-    public void deletar(Integer id){
+    public void deletarPorUsuarioId(Integer id){
         boolean usuarioExists = usuarioRepository.existsById(id);
         if(usuarioExists){
             usuarioRepository.deleteById(id);

@@ -3,7 +3,11 @@ package com.getmoney.controller;
 import com.getmoney.entity.Categoria;
 import com.getmoney.entity.Usuario;
 import com.getmoney.service.CategoriaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/categoria")
+@Tag(name="Categoria", description = "Api de gerenciamento de categorias")
 public class CategoriaController {
 
     private CategoriaService categoriaService;
@@ -21,41 +26,46 @@ public class CategoriaController {
     }
 
     @GetMapping("/listar")
+    @Operation(summary="Listar categorias", description="Endpoint para listar todas as categorias")
     public ResponseEntity <List<Categoria>> listarCategorias(){
         return ResponseEntity.ok(categoriaService.listarCategorias());
     }
 
-    @GetMapping("/listar/{categoriaId}")
-    public ResponseEntity<Categoria>listarCategoriaId(@PathVariable Integer categoriaId){
-        try{
-            Categoria categoria = categoriaService.buscarCategoriaId(categoriaId);
+    @GetMapping("/listarPorCategoriaId/{categoriaId}")
+    @Operation(summary = "Listar categoria pelo id de categoria", description = "Endpoint para obter categoria pelo id de categoria")
+    public ResponseEntity<Categoria>listarPorCategoriaId(@PathVariable Integer categoriaId){
+        Categoria categoria = categoriaService.listarPorCategoriaId(categoriaId);
+        if(categoria == null) {
+            return ResponseEntity.noContent().build();
+        }else{
             return ResponseEntity.ok(categoria);
-        }catch (EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<Categoria> criarCategoria(@RequestBody Categoria categoria){
+    @Operation(summary = "Criar nova categoria", description = "Endpoint para criar um novo registro de categoria")
+    public ResponseEntity<Categoria> criarCategoria(@Valid @RequestBody Categoria categoria){
         Categoria novaCategoria = categoriaService.criarCategoria(categoria);
         return ResponseEntity.status(HttpStatus.CREATED).body(novaCategoria);
 
     }
 
-    @PutMapping("/editar/{categoriaId}")
-    public ResponseEntity<Categoria> editarCategoria(@PathVariable Integer categoriaId,
+    @PutMapping("/editarPorCategoriaId/{categoriaId}")
+    @Operation(summary="Editar categorias pelo id da categoria", description="Endpoint para editar pelo id da categoria")
+    public ResponseEntity<Categoria> editarPorCategoriaId(@PathVariable Integer categoriaId,
                                                  @RequestBody Categoria categoria) {
         try {
-            Categoria categoriaAtualizada = categoriaService.editarCategoria(categoriaId, categoria);
-            return ResponseEntity.ok(categoriaAtualizada); // 200 OK com a usuario atualizado
+            Categoria categoriaAtualizada = categoriaService.editarPorCategoriaId(categoriaId, categoria);
+            return ResponseEntity.ok(categoriaAtualizada); // 200 OK com a categoria atualizado
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build(); // 404 se não achar a usuario
+            return ResponseEntity.notFound().build(); // 404 se não achar a categoria
         }
     }
 
-    @DeleteMapping("/deletar/{categoriaId}")
-    public ResponseEntity<Void> deletarCategoria(@PathVariable Integer categoriaId) {
-        categoriaService.deletarCategoria(categoriaId);
+    @DeleteMapping("/deletarPorCategoriaId/{categoriaId}")
+    @Operation(summary = "Deletar categoria", description = "Endpoint para deletar um novo registro de categoria")
+    public ResponseEntity<Void> deletarPorCategoriaId(@PathVariable Integer categoriaId) {
+        categoriaService.deletarPorCategoriaId(categoriaId);
         return ResponseEntity.noContent().build();
     }
 
