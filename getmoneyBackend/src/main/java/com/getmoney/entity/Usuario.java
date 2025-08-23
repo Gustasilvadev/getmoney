@@ -19,10 +19,10 @@ public class Usuario {
     @Column(name = "usuario_nome")
     private String nome;
 
-    @Column(name = "usuario_email")
+    @Column(name = "usuario_email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "usuario_senha")
+    @Column(name = "usuario_senha", nullable = false)
     private String senha;
 
     @Column(name = "usuario_data_criacao")

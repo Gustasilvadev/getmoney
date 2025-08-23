@@ -2,6 +2,7 @@ package com.getmoney.service;
 
 import com.getmoney.entity.Categoria;
 import com.getmoney.entity.Usuario;
+import com.getmoney.enums.CategoriaTipo;
 import com.getmoney.repository.CategoriaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,14 @@ public class CategoriaService {
 
     public Categoria listarPorCategoriaId(Integer categoriaId) {
         return categoriaRepository.findById(categoriaId).orElseThrow(() -> new EntityNotFoundException("Categoria com ID " + categoriaId + " não encontrado"));
+    }
+
+    public List<Categoria> listarPorCategoriaTipo(Integer categoriaTipo) {
+        // Converter o código inteiro para o enum
+        CategoriaTipo tipo = CategoriaTipo.fromCodigo(categoriaTipo);
+
+        // Buscar todas as categorias do tipo especificado
+        return categoriaRepository.findByTipo(tipo);
     }
 
     public Categoria criarCategoria(Categoria categoria){

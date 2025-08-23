@@ -4,6 +4,8 @@ import com.getmoney.entity.Categoria;
 import com.getmoney.entity.Usuario;
 import com.getmoney.service.CategoriaService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -40,6 +42,18 @@ public class CategoriaController {
         }else{
             return ResponseEntity.ok(categoria);
         }
+    }
+
+    @GetMapping("/listarPorCategoriaTipo/{CategoriaTipo}")
+    @Operation(summary = "Listar categoria pelo tipo de categoria", description = "Endpoint para obter categoria pelo tipo de categoria")
+    public ResponseEntity<List<Categoria>> listarPorTipo(@PathVariable("CategoriaTipo") Integer categoriaTipo) {
+        List<Categoria> categorias = categoriaService.listarPorCategoriaTipo(categoriaTipo);
+
+        if (categorias.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(categorias);
     }
 
     @PostMapping("/criar")

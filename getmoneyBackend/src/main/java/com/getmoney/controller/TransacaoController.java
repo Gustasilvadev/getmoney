@@ -24,6 +24,7 @@ public class TransacaoController {
         this.transacaoService = transacaoService;
     }
 
+
     @GetMapping("/listar")
     @Operation(summary="Listar transacoes", description="Endpoint para listar todas as transacoes")
     public ResponseEntity <List<Transacao>> listarTransacoes(){

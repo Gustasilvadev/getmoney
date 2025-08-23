@@ -12,16 +12,13 @@ public enum CategoriaTipo {
     CategoriaTipo(int codigo) {
         this.codigo = codigo;
     }
-    //Objeto vai para JSON, usa o número em vez do nome
-    @JsonValue
+
     public int getCodigo() {
         return codigo;
     }
 
-    //Quando JSON chega com número, converte para o objeto enum
-    @JsonCreator
     public static CategoriaTipo fromCodigo(int codigo) {
-        for (CategoriaTipo tipo : CategoriaTipo.values()) {
+        for (CategoriaTipo tipo : values()) {
             if (tipo.codigo == codigo) {
                 return tipo;
             }
